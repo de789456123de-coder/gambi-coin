@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$GAMBI — Gambiarra Coin</title>
+<meta name="description" content="$GAMBI: the coin held together with duct tape. It shouldn't work. It works anyway.">
+<meta property="og:title" content="$GAMBI — Gambiarra Coin">
+<meta property="og:description" content="It shouldn't work. It works anyway.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://de789456123de-coder.github.io/gambi-coin/og.png">
+<link rel="icon" href="gambi.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#2fb36b; --dark:#12402a; --yellow:#f4c430; --tape:#c9cdd2;
+    --bg:#fffbea; --fg:#12402a; --card:#ffffff; --muted:#4d6b5a;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --bg:#0d1f16; --fg:#e8f5ec; --card:#15301f; --muted:#9dbfa9; }
+  }
+  :root[data-theme="dark"]{ --bg:#0d1f16; --fg:#e8f5ec; --card:#15301f; --muted:#9dbfa9; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,sans-serif;line-height:1.55;overflow-x:hidden}
+  h1,h2,h3{font-family:Bangers,Impact,sans-serif;letter-spacing:1px;font-weight:400;margin:0 0 .4em}
+  a{color:inherit}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:14px 0}
+  nav .brand{display:flex;gap:8px;align-items:center;font-family:Bangers;font-size:26px;text-decoration:none}
+  nav .brand img{width:40px}
+  .btn{display:inline-block;background:var(--yellow);color:var(--dark);border:3px solid var(--dark);border-radius:12px;padding:10px 18px;font-weight:800;text-decoration:none;cursor:pointer;box-shadow:4px 4px 0 var(--dark);transition:transform .1s}
+  .btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--dark)}
+  .btn.ghost{background:var(--card);color:var(--fg)}
+  .lang{font-size:14px;padding:6px 12px}
+  .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center;padding:40px 0 56px}
+  .hero h1{font-size:clamp(48px,9vw,96px);line-height:.95;color:var(--green);text-shadow:4px 4px 0 var(--dark)}
+  .hero p.lead{font-size:clamp(18px,2.4vw,22px);color:var(--muted)}
+  .hero img{width:100%;max-width:380px;justify-self:center;animation:wobble 3s ease-in-out infinite}
+  @keyframes wobble{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg) translateY(-6px)}}
+  .ca{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:var(--card);border:3px dashed var(--dark);border-radius:12px;padding:10px 12px;margin:20px 0;font-family:ui-monospace,monospace;font-size:14px;word-break:break-all}
+  .ca code{flex:1;min-width:200px}
+  .tape{position:relative;display:inline-block;background:var(--tape);color:#12402a;padding:4px 14px;transform:rotate(-2deg);font-weight:800;margin-bottom:12px}
+  section{padding:48px 0}
+  section h2{font-size:clamp(36px,6vw,56px);color:var(--green);text-shadow:3px 3px 0 var(--dark)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .card{background:var(--card);border:3px solid var(--dark);border-radius:16px;padding:20px;box-shadow:6px 6px 0 var(--dark)}
+  .card h3{font-size:28px;color:var(--yellow);-webkit-text-stroke:1px var(--dark)}
+  .card .big{font-family:Bangers;font-size:40px;color:var(--green)}
+  ol.steps{counter-reset:s;list-style:none;padding:0;display:grid;gap:14px}
+  ol.steps li{counter-increment:s;background:var(--card);border:3px solid var(--dark);border-radius:14px;padding:16px 16px 16px 64px;position:relative}
+  ol.steps li::before{content:counter(s);position:absolute;left:14px;top:12px;width:36px;height:36px;border-radius:50%;background:var(--yellow);color:var(--dark);font-family:Bangers;font-size:24px;display:grid;place-items:center;border:2px solid var(--dark)}
+  table{width:100%;border-collapse:collapse;font-size:15px}
+  td{padding:10px;border-bottom:2px dashed var(--muted);word-break:break-all}
+  td:first-child{font-weight:800;width:40%;word-break:normal}
+  .disclaimer{font-size:13px;color:var(--muted);border-top:3px solid var(--dark);padding:24px 0 48px}
+  .socials{display:flex;gap:12px;flex-wrap:wrap}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:10px 18px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none}
+  .toast.show{opacity:1}
+  @media (max-width:720px){ .hero{grid-template-columns:1fr;text-align:center} .hero img{max-width:240px;order:-1} .ca{justify-content:center} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="#"><img src="gambi.svg" alt="">$GAMBI</a>
+    <button class="btn ghost lang" id="langBtn">PT 🇧🇷</button>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <span class="tape" data-i18n="tag">Held together with duct tape</span>
+      <h1>GAMBIARRA<br>COIN</h1>
+      <p class="lead" data-i18n="lead">It shouldn't work. It works anyway.</p>
+      <div class="ca">
+        <strong>CA:</strong>
+        <code id="ca">COMING_SOON</code>
+        <button class="btn lang" id="copyBtn" data-i18n="copy">Copy</button>
+      </div>
+      <div class="socials">
+        <a class="btn" id="buyLink" href="#how" data-i18n="buy">Buy $GAMBI</a>
+        <a class="btn ghost" href="https://x.com/" target="_blank" rel="noopener">X / Twitter</a>
+        <a class="btn ghost" href="https://t.me/" target="_blank" rel="noopener">Telegram</a>
+        <a class="btn ghost" id="dexLink" href="https://dexscreener.com/solana" target="_blank" rel="noopener">DexScreener</a>
+      </div>
+    </div>
+    <img src="gambi.svg" alt="Gambi, the patched-up robot mascot">
+  </header>
+</div>
+
+<section id="about">
+  <div class="wrap">
+    <h2 data-i18n="aboutT">What is a gambiarra?</h2>
+    <div class="grid">
+      <div class="card"><h3>🔧</h3><p data-i18n="a1">Brazilian word for a fix that makes no sense but works. Fan held by a rope. TV antenna made of steel wool. Car door closed with wire.</p></div>
+      <div class="card"><h3>🩹</h3><p data-i18n="a2">Every dev, trader and human has done one. Production code? Gambiarra. Your portfolio? Gambiarra. Crypto itself? Gambiarra.</p></div>
+      <div class="card"><h3>🤖</h3><p data-i18n="a3">Meet Gambi: a robot held together with silver tape, paper clips and pure faith. He shouldn't be running. He is.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2 data-i18n="howT">How to buy</h2>
+    <ol class="steps">
+      <li data-i18n="h1"><b>Get a wallet.</b> Download Phantom or Solflare.</li>
+      <li data-i18n="h2"><b>Get SOL.</b> Buy SOL on an exchange and send it to your wallet.</li>
+      <li data-i18n="h3"><b>Swap.</b> Go to pump.fun or Jupiter, paste the official CA above and swap SOL for $GAMBI.</li>
+      <li data-i18n="h4"><b>Post your gambiarra.</b> Tag #GAMBI and show us the fix that shouldn't work.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="tokenomics">
+  <div class="wrap">
+    <h2>Tokenomics</h2>
+    <div class="grid">
+      <div class="card"><div class="big">1B</div><p data-i18n="t1">Total supply</p></div>
+      <div class="card"><div class="big">0%</div><p data-i18n="t2">Buy / sell tax</p></div>
+      <div class="card"><div class="big">🔥</div><p data-i18n="t3">Liquidity burned</p></div>
+      <div class="card"><div class="big">🚫</div><p data-i18n="t4">Mint & freeze revoked</p></div>
+      <div class="card"><div class="big">🤝</div><p data-i18n="t5">Fair launch. No presale, no hidden team tokens.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="transparency">
+  <div class="wrap">
+    <h2 data-i18n="trT">Public wallets</h2>
+    <p data-i18n="trP">Every team wallet is public. Watch us. Judge us.</p>
+    <div class="card">
+      <table>
+        <tr><td data-i18n="w1">Dev wallet</td><td><code>TBD</code></td></tr>
+        <tr><td data-i18n="w2">Marketing / contests</td><td><code>TBD</code></td></tr>
+        <tr><td data-i18n="w3">Charity (real fixes)</td><td><code>TBD</code></td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <h2>Gambimap</h2>
+    <div class="grid">
+      <div class="card"><h3>Fase 1</h3><p data-i18n="r1">Launch. Survive. Duct tape everything.</p></div>
+      <div class="card"><h3>Fase 2</h3><p data-i18n="r2">Meme contests. "Post your gambiarra" challenge. DexScreener profile.</p></div>
+      <div class="card"><h3>Fase 3</h3><p data-i18n="r3">CoinGecko & CMC listings. Stickers. Real-world fixes for schools.</p></div>
+      <div class="card"><h3>Fase ???</h3><p data-i18n="r4">No roadmap. Just vibes and tape.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer class="disclaimer" data-i18n="disc">
+    $GAMBI is a meme coin with no intrinsic value, no utility and no expectation of financial return. It is not an investment, security or financial product. Crypto is extremely volatile and you can lose everything. Only use money you can afford to lose. Do your own research. The team's wallets are public and any team sale will be disclosed.
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // Cole aqui o endereço do contrato no dia do lançamento
+  const CA = "COMING_SOON";
+
+  const pt = {
+    tag:"Segurado com fita silver tape", lead:"Não era pra funcionar. Funciona mesmo assim.", copy:"Copiar", buy:"Comprar $GAMBI",
+    aboutT:"O que é gambiarra?",
+    a1:"Aquele conserto que não faz sentido mas funciona. Ventilador amarrado com corda. Antena de Bombril. Porta do carro fechada com arame.",
+    a2:"Todo dev, trader e ser humano já fez uma. Código em produção? Gambiarra. Sua carteira? Gambiarra. Cripto inteira? Gambiarra.",
+    a3:"Conheça o Gambi: um robô remendado com silver tape, clipes e fé. Não era pra estar ligado. Está.",
+    howT:"Como comprar",
+    h1:"<b>Crie uma carteira.</b> Baixe a Phantom ou a Solflare.",
+    h2:"<b>Compre SOL.</b> Compre SOL numa corretora e envie para sua carteira.",
+    h3:"<b>Troque.</b> Vá no pump.fun ou Jupiter, cole o CA oficial acima e troque SOL por $GAMBI.",
+    h4:"<b>Poste sua gambiarra.</b> Marque #GAMBI e mostre o conserto que não devia funcionar.",
+    t1:"Oferta total", t2:"Taxa de compra / venda", t3:"Liquidez queimada", t4:"Mint e freeze renunciados", t5:"Lançamento justo. Sem pré-venda, sem tokens escondidos do time.",
+    trT:"Carteiras públicas", trP:"Toda carteira do time é pública. Fiscalize a gente.",
+    w1:"Carteira do dev", w2:"Marketing / concursos", w3:"Doações (consertos de verdade)",
+    r1:"Lançar. Sobreviver. Passar fita em tudo.", r2:"Concursos de memes. Desafio \"poste sua gambiarra\". Perfil no DexScreener.",
+    r3:"Listagem no CoinGecko e CMC. Figurinhas. Consertos reais em escolas.", r4:"Sem roadmap. Só vibe e fita.",
+    disc:"$GAMBI é uma meme coin sem valor intrínseco, sem utilidade e sem expectativa de retorno financeiro. Não é investimento, valor mobiliário nem produto financeiro. Cripto é extremamente volátil e você pode perder tudo. Use apenas dinheiro que aceita perder. Faça sua própria pesquisa. As carteiras do time são públicas e qualquer venda do time será divulgada."
+  };
+  const en = {};
+  document.querySelectorAll("[data-i18n]").forEach(el => en[el.dataset.i18n] = el.innerHTML);
+
+  let lang = "en";
+  try { lang = localStorage.getItem("gambi-lang") || (navigator.language.startsWith("pt") ? "pt" : "en"); } catch(e){}
+  function apply(){
+    const dict = lang === "pt" ? pt : en;
+    document.querySelectorAll("[data-i18n]").forEach(el => { if (dict[el.dataset.i18n]) el.innerHTML = dict[el.dataset.i18n]; });
+    document.documentElement.lang = lang;
+    document.getElementById("langBtn").textContent = lang === "pt" ? "EN 🇺🇸" : "PT 🇧🇷";
+  }
+  document.getElementById("langBtn").onclick = () => { lang = lang === "pt" ? "en" : "pt"; try{localStorage.setItem("gambi-lang", lang)}catch(e){} apply(); };
+  apply();
+
+  document.getElementById("ca").textContent = CA;
+  if (CA !== "COMING_SOON") {
+    document.getElementById("buyLink").href = "https://pump.fun/coin/" + CA;
+    document.getElementById("dexLink").href = "https://dexscreener.com/solana/" + CA;
+  }
+  const toast = msg => { const t = document.getElementById("toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 1500); };
+  document.getElementById("copyBtn").onclick = async () => {
+    try { await navigator.clipboard.writeText(CA); toast(lang === "pt" ? "Copiado! 🩹" : "Copied! 🩹"); }
+    catch(e){ toast(CA); }
+  };
+</script>
+</body>
+</html>
